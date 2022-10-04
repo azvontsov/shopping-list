@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="theme.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+
+    <style>
+      [v-cloak] {
+        display: none;
+      }
+    </style>
+  </head>
+  <body style="background-color: #2c3e50">
+    <div style="color: 'red'">
+      <div class="container pt-5" id="shopping-list" v-cloak>
+        <div class="card shadow p-3 mb-5 bg-body rounded">
+          <div class="card-body">
+            <div class="header">
+              <h1>{{header || 'Welcome' }}</h1>
+              <button
+                v-if="editing"
+                @click="doEdit(false)"
+                class="btn btn-danger"
+              >
+                Cancel
+              </button>
+
+              <button
+                v-else
+                @click="doEdit(true)"
+                class="btn btn-dark shadow"
+                style="background-color: rgb(103, 114, 129)"
+              >
+                Add Item
+              </button>
+            </div>
+
+            <div v-if="editing" class="add-item-form">
+              <input
+                @keyup.enter="saveItem"
+                v-model="newItem"
+                class="form-control mt-4 mb-2"
+                placeholder="Add an Item"
+              />
+              <div class="form-check">
+                <input
+                  v-model="newItemHighPriority"
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="flexCheckDefault"
+                />
+                <label class="form-check-label"> High Priority </label>
+              </div>
+              <button
+                :disabled="newItem.length === 0"
+                @click="saveItem"
+                class="btn btn-success mt-3"
+              >
+                Save Item
+              </button>
+            </div>
+            <hr />
+            <p class="mt-4" v-if="items.length === 0">
+              You're bought all your items!
+            </p>
+
+            <ul>
+              <li
+                class="list-inline"
+                v-for="item, idx in reversedItems"
+                @click="togglePurchased(item)"
+                :key="item.id"
+                :class="{'text-decoration-line-through fs-4': item.purchased, 'text-danger fs-3 text-uppercase': item.highPriority}"
+              >
+                {{idx +1}}. {{ item.label }}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://unpkg.com/vue@3"></script>
+    <script>
+      Vue.createApp({
+        data: () => ({
+          header: "SHOPPING LIST APP",
+          editing: false,
+          newItem: "",
+          newItemHighPriority: false,
+          iceCreamFlavors: [],
+          items: [
+            {
+              id: 1,
+              label: "10 party hats",
+              purchased: true,
+              highPriority: false,
+            },
+            {
+              id: 2,
+              label: "2 board games",
+              purchased: true,
+              highPriority: false,
+            },
+            { id: 2, label: "20 cups", purchased: false, highPriority: true },
+          ],
+        }),
+        computed: {
+          reversedItems() {
+            return [...this.items].reverse();
+          },
+        },
+        methods: {
+          saveItem() {
+            this.items.push({
+              id: this.items.length + 1,
+              label: this.newItem,
+              highPriority: this.newItemHighPriority,
+            });
+            this.newItem = "";
+            this.newItemHighPriority = "";
+          },
+          doEdit(editing) {
+            this.editing = editing;
+            this.newItem = "";
+            this.newItemHighPriority = "";
+          },
+          togglePurchased(item) {
+            item.purchased = !item.purchased;
+          },
+        },
+      }).mount("#shopping-list");
+    </script>
+  </body>
+</html>
