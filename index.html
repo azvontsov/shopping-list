@@ -31,7 +31,7 @@
                 @click="doEdit(false)"
                 class="btn btn-danger"
               >
-                Cancel
+                Cancelc
               </button>
 
               <button
@@ -80,7 +80,7 @@
                 v-for="item, idx in reversedItems"
                 @click="togglePurchased(item)"
                 :key="item.id"
-                :class="{'text-decoration-line-through fs-4': item.purchased, 'text-danger fs-3 text-uppercase': item.highPriority}"
+                :class="{'text-decoration-line-through fs-4': item.purchased, 'text-danger fs-4 text-uppercase': item.highPriority}"
               >
                 {{idx +1}}. {{ item.label }}
               </li>
@@ -111,7 +111,19 @@
               purchased: true,
               highPriority: false,
             },
-            { id: 2, label: "20 cups", purchased: false, highPriority: true },
+            { id: 3, label: "20 cups", purchased: false, highPriority: true },
+            {
+              id: 4,
+              label: "asparagus and carrots",
+              purchased: true,
+              highPriority: false,
+            },
+            {
+              id: 5,
+              label: "crunchy vanilla granola",
+              purchased: false,
+              highPriority: false,
+            },
           ],
         }),
         computed: {
